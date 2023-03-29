@@ -1,9 +1,21 @@
-import express from 'express'
+import express from 'express';
+import config from './config/config';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import mongoose from 'mongoose';
 
 let app = express();
-let port:number = process.env.PORT || 3000;
-app.get("/",(req,res) => res.send("name"))
+let port = config.PORT;
+app.use(bodyParser.json());
+app.use(cors());
 
-app.listen(port, (data) => {
-    console.log('connected')
+import userRouter from './routes/user'
+app.use('/', userRouter);
+
+mongoose.connect(config.DB_URL)
+    .then(() => console.log('Database connected successfully.'))
+    .catch(err => console.log(err.message))
+
+app.listen(port, () => {
+    console.log(`app is running on port ${port}.`)
 });

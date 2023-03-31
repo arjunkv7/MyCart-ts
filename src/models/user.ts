@@ -9,6 +9,10 @@ let userSchema = new Schema({
 
 }, { timestamps: true});
 
+// userSchema.method.hashPassword: Function = (pass:string) => {
+//     let salt = 10
+// }
+
 let User = mongoose.model('users', userSchema);
 
-module.exports = User;
+export {User};

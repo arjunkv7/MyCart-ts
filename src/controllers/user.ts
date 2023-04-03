@@ -12,7 +12,7 @@ export let loginUser = (req:any) => {
                 let salt = 10
                 let saltRound = await bcrypt.genSalt(salt)
 
-               bcrypt.hash(password, salt,(data)=> { console.log(data); password = data})
+              password = await bcrypt.hash(password, salt)
                 let newUser = await new models.User({
                     firstName: 'Admin',
                     lastName: 'Admin',

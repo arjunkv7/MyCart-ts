@@ -12,6 +12,9 @@ app.use(cors());
 import userRouter from './routes/user'
 app.use('/', userRouter);
 
+import productRouter from './routes/product'
+app.use('/product', productRouter);
+
 mongoose.connect(config.DB_URL)
     .then(() => console.log('Database connected successfully.'))
     .catch(err => console.log(err.message))

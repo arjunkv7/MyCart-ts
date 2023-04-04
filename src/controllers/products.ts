@@ -1,6 +1,6 @@
 import models from '../models/index'
 
-export let addProduct = (req:any) => {
+export let addProduct = (req: any) => {
     return new Promise(async (resolve, reject) => {
         try {
             let data = req.body;
@@ -16,7 +16,29 @@ export let addProduct = (req:any) => {
         } catch (error) {
             console.log(error);
             reject(error)
-            
+
+        }
+    });
+}
+
+export let editProduct = (req: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { product_id } = req.body;
+            let data = req.body;
+            let updatedProduct = await models.Products.findByIdAndUpdate(product_id, {
+                name: data.name,
+                price: data.price,
+                category: data.category
+            }, { new: true });
+
+            if (!updatedProduct) return reject({ message: 'Please provide a valid product_id' });
+
+            resolve(updatedProduct);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+
         }
     });
 }

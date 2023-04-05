@@ -1,6 +1,6 @@
 import express, { request,response}  from "express";
 let router = express.Router();
-import {addProduct, editProduct} from '../controllers/products'
+import {addProduct, editProduct, getSingleProduct} from '../controllers/products'
 
 router.post('/', async (req,res) => {
     try {
@@ -17,6 +17,17 @@ router.put('/', async (req,res) => {
     try {
         let updatedProduct = await editProduct(req);
         res.status(200).json(updatedProduct);
+    } catch (err:any) {
+        console.log(err);
+        res.status(400).send(err.message);
+        
+    }
+});
+
+router.get('/', async (req,res) => {
+    try {
+        let productDetails = await getSingleProduct(req);
+        res.status(200).json(productDetails);
     } catch (err:any) {
         console.log(err);
         res.status(400).send(err.message);

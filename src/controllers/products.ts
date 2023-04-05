@@ -42,3 +42,21 @@ export let editProduct = (req: any) => {
         }
     });
 }
+
+export let getSingleProduct = (req:any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { product_id } = req.query;
+            let productDetails = await models.Products.findById(product_id);
+
+            if(!productDetails) return reject({ message: 'Please provide a valid product_id.'});
+
+            resolve(productDetails);
+
+        } catch (error) {
+            console.log(error);
+            reject(error);
+            
+        }
+    });
+}

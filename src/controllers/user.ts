@@ -2,17 +2,17 @@ import models from '../models/index'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 
-export let loginUser = (req:any) => {
-    return new Promise(async (resolve,reject) => {
+export let loginUser = (req: any) => {
+    return new Promise(async (resolve, reject) => {
         try {
-            let { userName , password } = req.body;
-            let adminNotExist =  await models.User.countDocuments();
-            if(adminNotExist === 0) {
+            let { userName, password } = req.body;
+            let adminNotExist = await models.User.countDocuments();
+            if (adminNotExist === 0) {
                 let password = "123456"
                 let salt = 10
                 let saltRound = await bcrypt.genSalt(salt)
-
-              password = await bcrypt.hash(password, salt)
+                console.log(saltRound + "saltround")
+                password = await bcrypt.hash(password, saltRound)
                 let newUser = await new models.User({
                     firstName: 'Admin',
                     lastName: 'Admin',
@@ -20,22 +20,22 @@ export let loginUser = (req:any) => {
                     password: password
                 }).save()
             }
-            let user:any = await models.User.findOne({ userName: userName});
+            let user: any = await models.User.findOne({ userName: userName }).lean();
 
-            if(!user) return reject({ message: 'Wrong userName'});
+            if (!user) return reject({ message: 'Wrong userName' });
 
-            let verifyPass = await bcrypt.compare(password,user.password);
-            if(verifyPass) {
-                let token = jwt.sign(user._id,'pass');
+            let verifyPass = await bcrypt.compare(password, user.password);
+            if (verifyPass) {
+                let token = jwt.sign({id:user._id}, 'pass');
                 resolve(token)
             }
-            else{
-                return reject({ message: 'Wrong password'})
+            else {
+                return reject({ message: 'Wrong password' })
             }
         } catch (err) {
             console.log(err);
             reject(err);
-            
+
         }
     })
 }

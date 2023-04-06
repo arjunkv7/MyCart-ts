@@ -6,7 +6,7 @@ let userSchema = new Schema({
     lastName: String,
     userName: String,
     mobile: String,
-
+    password: String,
 }, { timestamps: true});
 
 let User = mongoose.model('users', userSchema);

@@ -5,8 +5,8 @@ import {loginUser} from '../controllers/user'
 
 router.post('/login', async (req,res) => {
     try {
-        let isLogedIn = await loginUser(req);
-        res.status(200).json(isLogedIn)
+        let token = await loginUser(req);
+        res.status(200).json({ token: token});
     } catch (err:any) {
         console.log(err);
         res.status(400).send(err.message);

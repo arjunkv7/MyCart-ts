@@ -1,5 +1,6 @@
 import express, { request,response}  from "express";
 let router = express.Router();
+import { userJwtAuth } from '../middlewares/auth'
 import {addProduct, editProduct, getSingleProduct} from '../controllers/products'
 
 router.post('/', async (req,res) => {
@@ -24,7 +25,7 @@ router.put('/', async (req,res) => {
     }
 });
 
-router.get('/', async (req,res) => {
+router.get('/', userJwtAuth, async (req,res) => {
     try {
         let productDetails = await getSingleProduct(req);
         res.status(200).json(productDetails);
